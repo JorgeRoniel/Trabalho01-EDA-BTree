@@ -1,154 +1,73 @@
 package arvoreB;
 
 public class Arvore {
-    private int ordem;
+    private static final int ordem = 3;
     private Pagina raiz;
-    private int num_elementos;
-    
-    public int getOrdem() {
-        return ordem;
-    }
-    public void setOrdem(int ordem) {
-        this.ordem = ordem;
-    }
-    public Pagina getRaiz() {
-        return raiz;
-    }
-    public void setRaiz(Pagina raiz) {
-        this.raiz = raiz;
-    }
-    public int getNum_elementos() {
-        return num_elementos;
-    }
-    public void setNum_elementos(int num_elementos) {
-        this.num_elementos = num_elementos;
+
+    public Arvore(){
+        raiz = new Pagina(true);
     }
 
-    public Arvore(int n){
-        this.raiz = new Pagina(n);
-        this.ordem = n;
-        this.num_elementos = 0;
-    }
-
-    public void inserir(int k){
-        if(buscaChave(raiz, k) == null){
-            if(raiz.getN() == 0){
-                raiz.getChaves().set(0, k);
-                raiz.setN(raiz.getN()+1);
-            }else{
-                Pagina r = raiz;
-                if(r.getN() == ordem - 1){
-                    Pagina pag = new Pagina(ordem);
-                    raiz = pag;
-                    pag.setFolha(false);
-                    pag.setN(0);
-                    pag.getFilhos().set(0, r);
-                    dividePag(pag, 0, r);
-                    inserePagNaoCheio(pag, k);
-                }else{
-                    inserePagNaoCheio(r, k);
-                }
-            }
-            num_elementos++;
-        }
-    }
-
-    public Pagina buscaChave(Pagina pag, int k){
-        int i = 1;
-        while((i <= pag.getN()) && (k > pag.getChaves().get(i - 1))){
-            i++;
-        }
-
-        if((i <= pag.getN()) && (k == pag.getChaves().get(i-1))){
-            return pag;
-        }
-
-        if(pag.getFolha()){
-            return null;
+    public void inserir(int valor){
+        Pagina r = raiz;
+        if(r.getN() == 2 * ordem - 1){
+            Pagina aux = new Pagina(false);
+            raiz = aux;
+            aux.getFilhos().add(r);
+            dividePag(aux, 0, r);
+            inserirEmNoNaoCheio(aux, valor);
         }else{
-            return(buscaChave(pag.getFilhos().get(i-1), k));
+            inserirEmNoNaoCheio(r, valor);
         }
     }
 
-    public void dividePag(Pagina pai, int i, Pagina filho){
-        int metade = (int) Math.floor((ordem-1)/2);
+    private void dividePag(Pagina pai, int i, Pagina filho){
+        Pagina aux = new Pagina(filho.IsFolha());
+        aux.setN(ordem-1);
 
-        Pagina aux = new Pagina(ordem);
-        aux.setFolha(filho.getFolha());
-        aux.setN(metade);
-
-        for(int j = 0; j < metade+1; j++){
-            if((ordem-1) % 2 == 0){
-                aux.getChaves().set(j, filho.getChaves().get(j + metade));
-            }else{
-                aux.getChaves().set(j, filho.getChaves().get(j+metade+1));
-            }
-            filho.setN(filho.getN()-1);
+        for(int j = 0; j < ordem-1;j++){
+            aux.getChaves().add(filho.getChaves().get(ordem));
         }
 
-        if(!filho.getFolha()){
-            for(int j = 0; j < metade+1;j++){
-                if((ordem-1) % 2 == 0){
-                    aux.getFilhos().set(j, filho.getFilhos().get(j + metade));
-                }else{
-                    aux.getFilhos().set(j, filho.getFilhos().get(j + metade + 1));
-                }
+        if(!filho.IsFolha()){
+            for(int j = 0; j < ordem; j++){
+                aux.getFilhos().add(filho.getFilhos().get(ordem));
             }
         }
 
-        filho.setN(metade);
+        filho.setN(ordem-1);
 
-        for(int j = pai.getN(); j > i; j--){
-            pai.getFilhos().set(j+1, pai.getFilhos().get(j));
-        }
-
-        pai.getFilhos().set(i+1, aux);
-
-        for(int j = pai.getN(); j > i; j--){
-            pai.getChaves().set(j, pai.getChaves().get(j-1));
-        }
-
-        if((ordem - 1) % 2 == 0){
-            pai.getChaves().set(i, filho.getChaves().get(metade-1));
-            filho.setN(filho.getN()-1);
-        }else{
-            pai.getChaves().set(i, filho.getChaves().get(metade));
-        }
-
+        pai.getFilhos().add(i+1, aux);
+        pai.getChaves().add(i, filho.getChaves().get(ordem-1));
         pai.setN(pai.getN()+1);
     }
 
-    public void inserePagNaoCheio(Pagina pag, int x){
+    private void inserirEmNoNaoCheio(Pagina pag, int valor){
         int i = pag.getN() - 1;
 
-        if(pag.getFolha()){
-            while(i >= 0 && x < pag.getChaves().get(i)){
-                pag.getChaves().set(i + 1, pag.getChaves().get(i));
+        if(pag.IsFolha()){
+            pag.getChaves().add(0);
+            while(i >= 0 && valor < pag.getChaves().get(i)){
+                pag.getChaves().set(i+1, pag.getChaves().get(i));
                 i--;
             }
-            i++;
-            pag.getChaves().set(i, x);
-            pag.setN(pag.getN() + 1);
+
+            pag.getChaves().set(i+1, valor);
+            pag.setN(pag.getN()+1);
         }else{
-            while(i >= 0 && x < pag.getChaves().get(i)){
-                i--;
-            }
+            while(i >= 0 && valor < pag.getChaves().get(i)) i--;
 
             i++;
-            if((pag.getFilhos().get(i)).getN() == ordem - 1){
+            if(pag.getFilhos().get(i).getN() == 2 * ordem - 1){
                 dividePag(pag, i, pag.getFilhos().get(i));
-                if(x > pag.getChaves().get(i)){
-                    i++;
-                }
+                if(valor > pag.getChaves().get(i)) i++;
             }
-
-            inserePagNaoCheio(pag.getFilhos().get(i), x);
+            inserirEmNoNaoCheio(pag.getFilhos().get(i), valor);
         }
     }
+
     @Override
     public String toString() {
         return "Arvore [raiz=" + raiz + "]";
     }
-
-    
 }

@@ -1,73 +1,45 @@
 package arvoreB;
 
-import java.util.Vector;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Pagina {
     private int n;
-    private Vector<Integer> chaves;
-    private Vector<Pagina> filhos;
+    private List<Integer> chaves = new ArrayList<>();
+    private List<Pagina> filhos = new ArrayList<>();
     private Boolean folha;
-    private int larguraFilho;
 
-
-    public Pagina(Boolean folha){
+    
+    public Pagina(Boolean folha) {
         this.folha = folha;
     }
 
-    public Pagina(int n){
-        this.chaves = new Vector<Integer>(n - 1);
-        for(int i = 0; i < n - 1;i++){
-            this.chaves.add(null);
-        }
-
-        this.filhos = new Vector<Pagina>(n);
-        for(int x = 0; x < n;x++){
-            this.filhos.add(null);
-        }
-
-        this.folha = true;
-        this.n = 0;
-    }
 
     public int getN() {
         return n;
     }
-
     public void setN(int n) {
         this.n = n;
     }
-
-    public Vector<Integer> getChaves() {
+    public List<Integer> getChaves() {
         return chaves;
     }
-
-    public void setChaves(Vector<Integer> chaves) {
+    public void setChaves(List<Integer> chaves) {
         this.chaves = chaves;
     }
-
-    public Vector<Pagina> getFilhos() {
+    public List<Pagina> getFilhos() {
         return filhos;
     }
-
-    public void setFilhos(Vector<Pagina> filhos) {
+    public void setFilhos(List<Pagina> filhos) {
         this.filhos = filhos;
     }
-
-    public Boolean getFolha() {
+    public Boolean IsFolha() {
         return folha;
     }
-
     public void setFolha(Boolean folha) {
         this.folha = folha;
     }
 
-    public int getLarguraFilho() {
-        return larguraFilho;
-    }
-
-    public void setLarguraFilho(int larguraFilho) {
-        this.larguraFilho = larguraFilho;
-    }
 
     @Override
     public String toString() {
