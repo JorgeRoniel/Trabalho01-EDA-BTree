@@ -2,33 +2,33 @@ package arvoreB;
 import java.io.*;
 import java.util.ArrayList;
 
-class BTreeNode {
+class Pagina {
     int[] chaves;
-    BTreeNode[] filhos;
+    Pagina[] filhos;
     int n;
     boolean folha;
 
-    public BTreeNode(int t, boolean folha) {
+    public Pagina(int t, boolean folha) {
         this.chaves = new int[2 * t + 1];
-        this.filhos = new BTreeNode[2 * t + 2];
+        this.filhos = new Pagina[2 * t + 2];
         this.n = 0;
         this.folha = folha;
     }
 }
 
 class BTree {
-    BTreeNode raiz;
+    Pagina raiz;
     int t;
 
     public BTree(int t) {
-        this.raiz = new BTreeNode(t, true);
+        this.raiz = new Pagina(t, true);
         this.t = t;
     }
 
     public void inserir(int k) {
-        BTreeNode r = raiz;
+        Pagina r = raiz;
         if (r.n == 2 * t + 1) {
-            BTreeNode s = new BTreeNode(t, false);
+            Pagina s = new Pagina(t, false);
             raiz = s;
             s.filhos[0] = r;
             dividirFilho(s, 0, r);
@@ -38,7 +38,7 @@ class BTree {
         }
     }
 
-    private void inserirNaoCheio(BTreeNode x, int k) {
+    private void inserirNaoCheio(Pagina x, int k) {
         int i = x.n - 1;
         if (x.folha) {
             while (i >= 0 && x.chaves[i] > k) {
@@ -62,8 +62,8 @@ class BTree {
         }
     }
 
-    private void dividirFilho(BTreeNode x, int i, BTreeNode y) {
-        BTreeNode z = new BTreeNode(t, y.folha);
+    private void dividirFilho(Pagina x, int i, Pagina y) {
+        Pagina z = new Pagina(t, y.folha);
         z.n = t;
         for (int j = 0; j < t; j++) {
             z.chaves[j] = y.chaves[j + t + 1];
@@ -86,7 +86,7 @@ class BTree {
     }
 
     public void imprimirNiveis(PrintWriter writer) {
-        ArrayList<BTreeNode> fila = new ArrayList<>();
+        ArrayList<Pagina> fila = new ArrayList<>();
         ArrayList<Integer> niveis = new ArrayList<>();
         fila.add(raiz);
         niveis.add(1);
@@ -96,7 +96,7 @@ class BTree {
         boolean primeiroElemento = true;
 
         while (!fila.isEmpty()) {
-            BTreeNode no = fila.remove(0);
+            Pagina no = fila.remove(0);
             int nivelNo = niveis.remove(0);
 
             if (nivelNo > nivelAtual) {
@@ -126,7 +126,7 @@ class BTree {
         writer.println();
     }
 
-    public int encontrarNumeroDeNiveis(BTreeNode no) {
+    public int encontrarNumeroDeNiveis(Pagina no) {
         if (no.folha) {
             return 1;
         } else {
