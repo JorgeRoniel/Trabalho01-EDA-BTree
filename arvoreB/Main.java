@@ -1,5 +1,4 @@
 package arvoreB;
-
 import java.io.*;
 
 public class Main {
@@ -10,7 +9,7 @@ public class Main {
             File outputFile = new File(folderPath, "saida.txt");
 
             if (!inputFile.exists()) {
-                System.err.println("Erro: arquivo 'entrada.txt' não encontrado no diretório 'trblhEda'.");
+                System.err.println("Erro: arquivo 'entrada.txt' não encontrado no diretório 'arvoreB'.");
                 return;
             }
 
@@ -31,7 +30,7 @@ public class Main {
             if (bTree.raiz.n == 0) {
                 writer.println("Arvore B vazia");
             } else {
-                writer.println("Ordem: " + t + " & Níveis: " + bTree.encontrarNumeroDeNiveis(bTree.raiz));
+                writer.println("Ordem: " + t + " & Niveis: " + bTree.encontrarNumeroDeNiveis(bTree.raiz));
             }
 
             bTree.imprimirNiveis(writer);

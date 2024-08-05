@@ -1,5 +1,4 @@
 package arvoreB;
-
 import java.io.*;
 import java.util.ArrayList;
 
@@ -92,6 +91,9 @@ class BTree {
         fila.add(raiz);
         niveis.add(1);
         int nivelAtual = 1;
+        writer.print("Nivel " + nivelAtual + ": ");
+
+        boolean primeiroElemento = true;
 
         while (!fila.isEmpty()) {
             BTreeNode no = fila.remove(0);
@@ -100,16 +102,18 @@ class BTree {
             if (nivelNo > nivelAtual) {
                 writer.println();
                 nivelAtual = nivelNo;
-                writer.print("Nível " + nivelAtual + ": ");
-            } else if (!fila.isEmpty()) {
+                writer.print("Nivel " + nivelAtual + ": ");
+                primeiroElemento = true;
+            } else if (!primeiroElemento) {
                 writer.print(" - ");
             }
 
             for (int i = 0; i < no.n; i++) {
-                if (i > 0) {
+                if (!primeiroElemento) {
                     writer.print(" ");
                 }
                 writer.print(no.chaves[i]);
+                primeiroElemento = false;
             }
 
             if (!no.folha) {
