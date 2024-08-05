@@ -30,7 +30,7 @@ public class Main {
             if (bTree.raiz.n == 0) {
                 writer.println("Arvore B vazia");
             } else {
-                writer.println("Ordem: " + t + " & Niveis: " + bTree.encontrarNumeroDeNiveis(bTree.raiz));
+                writer.println("Ordem: " + t + " e Niveis: " + bTree.encontrarNumeroDeNiveis(bTree.raiz));
             }
 
             bTree.imprimirNiveis(writer);
